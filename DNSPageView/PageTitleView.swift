@@ -133,30 +133,23 @@ open class PageTitleView: UIView {
         if index > titles.count || index < 0 {
             print("DNSPageTitleView -- selectedTitle: 数组越界了, index的值超出有效范围");
         }
-        
-        let targetIndex = PageTitleView.layoutDirection == .rightToLeft ? titles.count - 1 - index : index
 
-        clickHandler?(self, targetIndex)
+        clickHandler?(self, index)
 
-        if targetIndex == currentIndex {
+        if index == currentIndex {
             delegate?.eventHandler??.titleViewDidSelectSameTitle?()
             return
         }
-        titleLabels.forEach { (label) in
-            label.textColor = style.titleColor
-            label.transform = CGAffineTransform.identity
-            label.backgroundColor = .clear
-        }
 
-        //let sourceLabel = titleLabels[currentIndex]
+        let sourceLabel = titleLabels[currentIndex]
         let targetLabel = titleLabels[index]
 
-        //sourceLabel.textColor = style.titleColor
+        sourceLabel.textColor = style.titleColor
         targetLabel.textColor = style.titleSelectedColor
         
         delegate?.eventHandler??.contentViewDidDisappear?()
 
-        currentIndex = targetIndex
+        currentIndex = index
 
         delegate?.titleView(self, didSelectAt: currentIndex)
         
@@ -164,7 +157,7 @@ open class PageTitleView: UIView {
 
         if style.isTitleScaleEnabled {
             UIView.animate(withDuration: 0.25, animations: {
-                //sourceLabel.transform = CGAffineTransform.identity
+                sourceLabel.transform = CGAffineTransform.identity
                 targetLabel.transform = CGAffineTransform(scaleX: self.style.titleMaximumScaleFactor, y: self.style.titleMaximumScaleFactor)
             })
         }
@@ -183,7 +176,7 @@ open class PageTitleView: UIView {
             })
         }
 
-        //sourceLabel.backgroundColor = UIColor.clear
+        sourceLabel.backgroundColor = UIColor.clear
         targetLabel.backgroundColor = style.titleViewSelectedColor
                 
     }
@@ -202,17 +195,6 @@ extension PageTitleView {
         setupBottomLine()
         setupCoverView()
     }
-    
-    static let layoutDirection: UIUserInterfaceLayoutDirection = {
-        if #available(iOS 9.0, *) {
-            let attribute = UIApplication.shared.keyWindow!.semanticContentAttribute
-            return UIView.userInterfaceLayoutDirection(for: attribute)
-        } else {
-            // Fallback on earlier versions
-            return .leftToRight
-        }
-        
-    }()
     
     private func setupTitleLabels() {
         for (i, title) in titles.enumerated() {
