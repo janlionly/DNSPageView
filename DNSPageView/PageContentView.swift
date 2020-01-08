@@ -64,7 +64,7 @@ open class PageContentView: UIView {
         collectionView.delegate = self
         collectionView.bounces = false
         if #available(iOS 9.0, *) {
-            collectionView.semanticContentAttribute = .unspecified
+            collectionView.semanticContentAttribute = .forceLeftToRight
         }
         if #available(iOS 10, *) {
             collectionView.isPrefetchingEnabled = false
