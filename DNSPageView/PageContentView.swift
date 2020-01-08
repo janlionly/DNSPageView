@@ -63,6 +63,9 @@ open class PageContentView: UIView {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.bounces = false
+        if #available(iOS 9.0, *) {
+            collectionView.semanticContentAttribute = .unspecified
+        }
         if #available(iOS 10, *) {
             collectionView.isPrefetchingEnabled = false
         }
