@@ -83,7 +83,7 @@ open class PageTitleView: UIView {
         return scrollView
     }()
     
-    private lazy var bottomLine: UIView = {
+    public lazy var bottomLine: UIView = {
         let bottomLine = UIView()
         bottomLine.backgroundColor = self.style.bottomLineColor
         bottomLine.layer.cornerRadius = self.style.bottomLineRadius
