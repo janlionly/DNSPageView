@@ -129,9 +129,23 @@ open class PageTitleView: UIView {
     /// 通过代码实现点了某个位置的titleView
     ///
     /// - Parameter index: 需要点击的titleView的下标
-    public func selectedTitle(at index: Int) {
+    public func selectedTitle(at index: Int, isRTLReverseIndex: Bool = false) {
         if index > titles.count || index < 0 {
             print("DNSPageTitleView -- selectedTitle: 数组越界了, index的值超出有效范围");
+        }
+        
+        var index = index
+        guard let keyWindow = UIApplication.shared.keyWindow else {
+            return
+        }
+        if isRTLReverseIndex {
+            if #available(iOS 9.0, *) {
+                let attribute = keyWindow.semanticContentAttribute
+                let direction = UIView.userInterfaceLayoutDirection(for: attribute)
+                if direction == .rightToLeft {
+                    index = titles.count - 1 - index
+                }
+            }
         }
 
         clickHandler?(self, index)
